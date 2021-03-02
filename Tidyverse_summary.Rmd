@@ -1,0 +1,102 @@
+---
+title: "Tidyverse"
+author: "Jonggi Choi"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE }
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(comment = NA)
+```
+
+## R markdown options
+
+* 실습을 위한 2가지 데이터 셋
+1. dt = 'ex_chb.csv'
+1. dat = 'ex_data.csv'
+
+#### I. Data 불러오기
+```{r data_loading}
+# 현재 working directory 확인 필요 #
+getwd()
+```
+
+```{r}
+# Data를 불러온다.
+dt <- read.csv("ex_chb.csv")
+dat <- read.csv("ex_data.csv")
+```
+
+```{r}
+# 만약 현재 working directory안에 없다면 폴더 경로 전체를 지정해야된다.
+dt <- read.csv("/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi/ex_chb.csv")
+dat <- read.csv("/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi/ex_data.csv")
+```
+
+* Data는 어떻게 생겼는지
+```{r results = 'hide'}
+str(dat)
+head(dat, 5) # 제일 위 5줄만 보여줌
+```
+
+* 어떤 column (열)이 포함되어 있는지
+```{r results = 'hide'}
+colnames(dat, 10)
+```
+* Data의 길이, 크기
+```{r}
+dim(dat)
+length(dat)
+nrow(dat)
+NROW(dat)
+
+# 결측값 NA가 존재할때 길이, 크기
+length(dat$m6_inr)
+sum(is.na(dat$m6_inr)) # dat$m6_inr 에서 NA는 163개 존재
+sum(!is.na(dat$m6_inr)) # dat$m6_inr 에서 값이 존재하는 것은  837개 존재
+```
+
+#### II. 기술통계 및 간단한 계산
+* 간단한 기술 통계
+```{r}
+mean(dat$age)
+median(dat$age)
+sd(dat$age)
+var(dat$age)
+min(dat$age)
+max(dat$age)
+range(dat$age)
+IQR(dat$age)
+# 5가지 기술통계 한꺼번에 보여주기, 제일 편하고 많이 사용
+summary(dat$age)
+```
+
+* 기술 통계에 결측값이 있는 경우
+```{r}
+mean(dat$m6_inr) # NA로 표시됨
+mean(dat$m6_inr, na.rm=T) # na.rm의미 = NA remove
+# NA를 제외하고 mean을 계산
+```
+
+
+* 유용한 summary 함수
+```{r}
+# 'Hmisc' package에 있는 'describe' function
+Hmisc::describe(dat$age)
+
+# or
+library(Hmisc)
+describe(dat$age)
+```
+
+
+
+
+
+
+
