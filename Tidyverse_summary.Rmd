@@ -26,6 +26,16 @@ knitr::opts_chunk$set(comment = NA)
 getwd()
 ```
 
+* 실습을 위한 package loading
+```{r}
+library(tidyverse)
+library(moonBook)
+library(Hmisc)
+library(caret)
+library(survival)
+```
+
+
 ```{r}
 # Data를 불러온다.
 dt <- read.csv("ex_chb.csv")
@@ -94,7 +104,23 @@ library(Hmisc)
 describe(dat$age)
 ```
 
+* Dataframe에서 각 column 별로 기술통계 계산하기
+```{r}
+# 연습을 위한 temporary data
+temp <- dat %>% 
+  select(b_alt, b_alb, b_plt)
+head(temp)
 
+# 가로줄로 mean 계산
+temp$row_mean <- rowMeans(temp[ , c('b_alt', 'b_alb','b_plt')])
+head(temp)
+# 가로줄로 sum 계산
+temp$row_sum <- rowMeans(temp[ , c('b_alt', 'b_alb','b_plt')])
+head(temp)
+# variable 이름을 안쓰고 columne 순서를 써도 된다.
+temp$row_sum2 <- rowMeans(temp[ , c(1,2,3)])
+head(temp)
+```
 
 
 

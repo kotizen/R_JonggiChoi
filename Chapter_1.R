@@ -20,4 +20,5 @@ temp <- dat %>%
 temp %>% 
   mutate(n1 = mean('b_alt', 'b_alb', 'b_plt'))
 
+# temporary
          
