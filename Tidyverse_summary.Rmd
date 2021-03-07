@@ -1,5 +1,5 @@
 ---
-title: "Tidyverse"
+title: "젊은 임상 연구자들을 위한 필수 R"
 author: "Jonggi Choi"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: html_document
@@ -14,115 +14,163 @@ knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(comment = NA)
 ```
 
-## R markdown options
-
-* 실습을 위한 2가지 데이터 셋
-1. dt = 'ex_chb.csv'
-1. dat = 'ex_data.csv'
-
-#### I. Data 불러오기
-```{r data_loading}
-# 현재 working directory 확인 필요 #
-getwd()
+```{=html}
+<style>
+div.blue 
+{background-color:lightblue; border-radius: 5px; padding: 10px;}
+</style>
 ```
+::: {.blue}
+   
+본 문서는 배포는 가능하지만 출처는 밝혀주시길 바랍니다.
 
-* 실습을 위한 package loading
+**작성자**   
+울산의대 서울아산병원    
+소화기내과 조교수 최종기    
+작성 일시: `r format(Sys.time(), '%B %d, %Y')`    
+버전: Version 1.0
+:::
+   
+     
+## 1. Basic function for data exploration
+### 1.1 실습에 필요한 package loading
 ```{r}
 library(tidyverse)
-library(moonBook)
-library(Hmisc)
-library(caret)
-library(survival)
 ```
 
-
+### 1.2 Data 불러오기
+   
+- **현재 사용하고 있는 working directory 확인**
 ```{r}
-# Data를 불러온다.
-dt <- read.csv("ex_chb.csv")
-dat <- read.csv("ex_data.csv")
+getwd()
 ```
-
+Mac과 Windows는 폴더 경로 표시 방식이 다르기때문에 주의!
+   
+   
+- **실습을 위해 사용할 data 불러오기 (chb_example.csv)**
 ```{r}
-# 만약 현재 working directory안에 없다면 폴더 경로 전체를 지정해야된다.
-dt <- read.csv("/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi/ex_chb.csv")
-dat <- read.csv("/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi/ex_data.csv")
+# Data (csv파일)를 불러오는 방식에는 2가지가 있다.
+# 일반 data.frame으로 불러오는 경우
+dat <- read.csv("chb_example.csv") # read.csv 이용
+class(dat) # data 형태가 data.frame
+# Tibble형태로 불러오는 경우
+dat <- read_csv("chb_example.csv") # read_csv 이용
+class(dat) # data 형태가 tibble (tbl_df)
 ```
-
-* Data는 어떻게 생겼는지
-```{r results = 'hide'}
-str(dat)
-head(dat, 5) # 제일 위 5줄만 보여줌
+일반적인 data.frame형태로 불러와도 되지만 tibble형태가 조금 더 깔끔하고 tidyverse 명령어에 적합하다.   
+하지만 기본적으로 tibble은 data.frame과 같은 속성에서 비롯되었다.
+   
+   
+   
+- **Data는 어떻게 생겼는지 구조 파악**
+```{r }
+# Data의 구조를 보여주는 기본 명령어
+str(dat) 
+# 제일 위 6줄만 보여줌. 많이 쓰임
+head(dat)
+# 이것도 가능, 3줄만 보여줌
+head(dat, 3)
+# 제일 마지막 6줄 보여줌
+tail(dat)
+# Tibble 형태의 data는 glimpse 형태 명령어를 쓰면 깔끔하게 요약되어 보인다
+glimpse(dat)
 ```
-
-* 어떤 column (열)이 포함되어 있는지
-```{r results = 'hide'}
-colnames(dat, 10)
-```
-* Data의 길이, 크기
-```{r}
+   
+   
+   
+- **Data의 구조 및 크기 파악**
+```{r }
+# 전체 data dimension
 dim(dat)
-length(dat)
+```
+1000행(케이스 혹은 환자), 23열(컬럼 혹은 variable)
+
+```{r}
+# 전체 케이스 숫자만 궁금할때
 nrow(dat)
-NROW(dat)
-
-# 결측값 NA가 존재할때 길이, 크기
-length(dat$m6_inr)
-sum(is.na(dat$m6_inr)) # dat$m6_inr 에서 NA는 163개 존재
-sum(!is.na(dat$m6_inr)) # dat$m6_inr 에서 값이 존재하는 것은  837개 존재
+# column name (=variable name)
+colnames(dat)
 ```
-
-#### II. 기술통계 및 간단한 계산
-* 간단한 기술 통계
+   
+   
+   
+- **각 variable들의 특징 파악**
 ```{r}
+# Age 변수 특성 파악
+# 평균
 mean(dat$age)
+# 중앙값
 median(dat$age)
+# 표준편차
 sd(dat$age)
+# 분산
 var(dat$age)
+# 최소값
 min(dat$age)
+# 최대값
 max(dat$age)
+# 범위
 range(dat$age)
+# 1사분위수-3사분위수 범위
 IQR(dat$age)
-# 5가지 기술통계 한꺼번에 보여주기, 제일 편하고 많이 사용
+# 한꺼번에 보여주기
 summary(dat$age)
+   
+# Hmisc package의 describe 명령어가 유용
+# Age 변수의 특징 파악
+Hmisc::describe(dat$age)
 ```
 
-* 기술 통계에 결측값이 있는 경우
+    
+    
+- **결측값이 존재하는 경우 데이터 특성 파악**
 ```{r}
-mean(dat$m6_inr) # NA로 표시됨
-mean(dat$m6_inr, na.rm=T) # na.rm의미 = NA remove
+# 결측값이 존재하는 variable은 평균 계산 불가
+mean(dat$b_alb) # NA로 표시됨
+# 결측값이 존재하는 경우 'na.rm=TRUE' option 추가
+mean(dat$b_alb, na.rm=T) # na.rm의미 = NA remove
 # NA를 제외하고 mean을 계산
 ```
-
-
-* 유용한 summary 함수
+   
+    
+    
+- **결측값(NA)이 존재하는지 확인하기**
 ```{r}
-# 'Hmisc' package에 있는 'describe' function
-Hmisc::describe(dat$age)
-
-# or
-library(Hmisc)
-describe(dat$age)
+# NA 존재 명령어 'is.na'
+# True = 결측값
+# False = 결측값 아님
+is.na(dat$b_inr[1:20])
 ```
-
-* Dataframe에서 각 column 별로 기술통계 계산하기
+'b_inr'변수의 1-20행까지 결측값이 존재하는지 확인가능
 ```{r}
-# 연습을 위한 temporary data
-temp <- dat %>% 
-  select(b_alt, b_alb, b_plt)
-head(temp)
-
-# 가로줄로 mean 계산
-temp$row_mean <- rowMeans(temp[ , c('b_alt', 'b_alb','b_plt')])
-head(temp)
-# 가로줄로 sum 계산
-temp$row_sum <- rowMeans(temp[ , c('b_alt', 'b_alb','b_plt')])
-head(temp)
-# variable 이름을 안쓰고 columne 순서를 써도 된다.
-temp$row_sum2 <- rowMeans(temp[ , c(1,2,3)])
-head(temp)
+# 전체 1,000개 행중에 b_inr 변수의 총 NA는 몇개?
+sum(is.na(dat$b_inr))
 ```
-
-
-
-
-
+b_inr이 NA일경우 true (1로 게산됨)
+이경우를 모두 sum하게 되니깐 총 16개의 NA가 b_inr에 존재함
+```{r}
+# summary로도 확인가능
+summary(dat$b_inr)
+```
+   
+   
+   
+- **Baseline characteristics Table 만들기**
+```{r}
+# moonBook package를 이용하여 descriptive analysis
+# treat_gr (ETV:entecavir, TDF:tenofovir)에 따른 두군의 # 비교
+library(moonBook)
+mytable(treat_gr~age+gender,data=dat)
+# 전체 그룹도 표시하기
+mytable(treat_gr~age+gender, data=dat, show.total=TRUE)
+# mean +/- SD 말고 median [IQR]로 표시하기
+mytable(treat_gr~age+gender,data=dat, method=2)
+# treat_gr에 따른 모든 변수 비교
+mytable(treat_gr~., data=dat)
+# 만든 table 저장하기
+table1<-mytable(treat_gr~age+gender, data=dat)
+table1
+mycsv(table1, file="table1.csv") 
+# mycsv(table객체, file="파일이름")
+```
+특별히 경로를 지정해주지 않으면현재 working directory에 저장이 된다.
