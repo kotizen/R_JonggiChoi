@@ -2,8 +2,11 @@
 title: "젊은 임상 연구자들을 위한 필수 R"
 author: "Jonggi Choi"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: html_document
-editor_options: 
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
@@ -152,15 +155,15 @@ Hmisc::describe(dat$age)
 mean(dat$b_alb) # NA로 표시됨
 # 결측값이 존재하는 경우 'na.rm=TRUE' option 추가
 mean(dat$b_alb, na.rm=T) # na.rm의미 = NA remove
-# NA를 제외하고 mean을 계산
 ```
+NA를 제외하고 mean을 계산을 해준다
 <br/>
 
 - **결측값(NA)이 존재하는지 확인하기**
 ```{r}
 # NA 존재 명령어 'is.na'
-# True = 결측값
-# False = 결측값 아님
+# is.na 결과값이 True = 결측값
+# is.na 결과값이 False = 결측값 아님
 is.na(dat$b_inr[1:20])
 ```
 'b_inr'변수의 1-20행까지 결측값이 존재하는지 확인가능
@@ -176,7 +179,27 @@ summary(dat$b_inr)
 ```
 <br/>
 
-- **Baseline characteristics Table 만들기**
+- **Data 형태 (class) 확인하기**
+```{r}
+# is.*() 함수를 이용한다.
+
+is.data.frame(dat)  # data.frame?
+is.matrix(dat)  # matrix?
+
+is.character(dat$age)  # 문자형 데이터인 범주형 변수? 
+is.character(dat$gender)  # 문자형 데이터인 범주형 변수? 
+
+is.numeric(dat$age)  # 수치형 데이터인 연속형 변수?
+is.numeric(dat$gender)  # 수치형 데이터인 연속형 변수?
+
+is.integer(dat$age)  # 정수형 데이터인 연속형 변수?
+is.double(dat$age)  # 더블형 데이터인 연속형 변수? 
+```
+<br?>
+   
+   
+   
+### 1.4 Baseline characteristics Table 만들기 ###
 ```{r}
 # moonBook package를 이용하여 descriptive analysis
 # treat_gr (ETV:entecavir, TDF:tenofovir)에 따른 두군의 # 비교
@@ -187,7 +210,7 @@ mytable(treat_gr~age+gender, data=dat, show.total=TRUE)
 # mean +/- SD 말고 median [IQR]로 표시하기
 mytable(treat_gr~age+gender,data=dat, method=2)
 # treat_gr에 따른 모든 변수 비교
-mytable(treat_gr~., data=dat)
+mytable(treat_gr~., data=dat) # ~. 의 의미는 'treat_gr'제외하고 나머지 모든 변수를 넣어달라는 의미
 # 만든 table 저장하기
 table1<-mytable(treat_gr~age+gender, data=dat)
 table1
@@ -195,3 +218,150 @@ mycsv(table1, file="table1.csv")
 # mycsv(table객체, file="파일이름")
 ```
 특별히 경로를 지정해주지 않으면현재 working directory에 저장이 된다.
+<br/>
+
+## 2. Data manipulation using dplyr 
+
+### 2.1 Key five functions in Tidyverse ###
+
+1. filter
+2. select
+3. arrange
+4. mutate
+5. summarise
+
+#### 2.1.1 Filter function ####
+```{r}
+# 원본 data는 손대지말고 연습을 위해 복사본 (dat1)을 만들자
+dat1 <- dat
+```
+**R은 되돌아가기 (Ctrl+Z)기능이 없기에, data의 변형이 우려되면 복사본을 만들어두고 가능하면 original data는 그대로 두는것이 좋다 **
+   
+   
+- filter는 말그대로 필터다. 엑셀의 그 깔대기모양의 '필터'
+- 즉 필요한 조건에 만족하는 값만을 출력
+```{r}
+# Gender (Male: M or Female: F)를 이용
+dat1 %>% 
+  count(gender)
+```
+- dat1에서 male값만을 선택
+```{r}
+dat1 %>% 
+   filter(gender == "M") # 같다는= 한개가 아니고 == 2개!
+```
+```{r}
+dat1 %>% 
+   filter(gender != "F") # 같지 않다는 != 로 표현
+```
+즉 위의 2개 코드는 같은 값을 출력 해준다.
+
+- **복합 조건 (AND)**
+```{r}
+# older than 50 years old
+dat1 %>% 
+  filter(age>=50) # 385명
+
+# older than 50 years old + Male
+dat1 %>% 
+  filter(gender == "M", age >=50) # 220명
+
+# older than 50 years old + Male + Cirrhosis
+dat1 %>% 
+  filter(gender == "M", age >=50, lc==1) # 152명
+```
+각 조건들간의 AND 조합은 , & 어느것을 써도 된다.
+
+- **복합 조건 (OR)**
+```{r}
+# age 30세 미만이거나 80세 이상인 경우
+dat1 %>% 
+  filter(age <30 | age >80) # 74명
+# age 70세 이상이거나 cirrhosis 있는 경우
+dat1 %>% 
+  filter(age >70 | lc==1) # 526명
+```
+
+- **복합 여러 조건 (AND + OR, not)**
+```{r}
+# 80세 이상의 남성이나(OR) 30세 미만의 여자
+dat1 %>% 
+  filter( (age>80 & gender =="M") | (age<30 & gender =="F")) 
+
+# 50세 이상이면서 간경화가 없는 환자
+dat1 %>% 
+  filter(age >=50 & lc!=1)
+
+```
+수학에서 먼저 해야되는 연산은 ()로 묶어 주듯이 조건별로 적절히 ()로 묶어준다.
+
+- **유용한 명령어**
+   
+[index_date]로 부터 연도(year)만 분리해서 variable을 새로 만들자 
+```{r, eval=FALSE}
+dat1$year<-year(dat1$index_date)
+```
+Error가 날겁니다.
+   
+```{r}
+class(dat1$index_date)
+```
+dat1$index_date의 형태는 "Date" 입니다.   
+
+"Date" 형태의 data에서 자동으로 Year만 분리해줄 수 있는 함수가 필요합니다. (lubridate package)
+```{r}
+library(lubridate)
+dat1$year<-year(dat1$index_date)
+
+# year 분포를 봅시다.
+dat1 %>% 
+   count(year)
+```
+
+만약 filter를 이용해서 2007, 2008, 2009년 자료만 골라낸다면?
+```{r}
+dat1 %>% 
+   filter(year <= 2009) # 801명
+```
+만약 2007, 2008, 2010년을 골라내야 한다면
+```{r}
+dat1 %>% 
+   filter(year==2007 | year==2008 | year==2010) # 707명
+```
+하지만 골라내야될 조건이 많아지거나 불규칙적이다면?   
+   
+%in%을 사용해보자
+```{r}
+dat1 %>% 
+   filter(year %in% c(2007, 2008, 2010)) # 같은 결과
+```
+
+between을 이용해도 된다
+```{r}
+# 30세이상 80세 이하
+dat1 %>% 
+   filter(age >=30 & age <80) # 926명
+# between 이용시
+dat1 %>% 
+   filter(between(age, 30,80)) #이상, 이하의미로 30, 80은 포함됨!
+```
+주의! between 이용시 지정값은 포함됨   
+
+- **결측값이 없는 자료만 filter**
+```{r}
+# b_inr (prothrombine time INR)의 결측값은 몇개?
+summary(dat1$b_inr)
+# 혹은
+sum(is.na(dat1$b_inr)) 
+```
+INR 값이 있는 자료만 filter 해보자
+```{r}
+dat1 %>% 
+   filter( is.na(b_inr)) # 이렇게 하면 b_inr이 NA만 나온다
+
+# 따라서
+dat1 %>% 
+   filter( !is.na(b_inr)) #즉 NA가 !(not)값들만 나온다.
+```
+
+

@@ -1,0 +1,1534 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={젊은 임상 연구자들을 위한 필수 R},
+  pdfauthor={Jonggi Choi},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{젊은 임상 연구자들을 위한 필수 R}
+\author{Jonggi Choi}
+\date{March 14, 2021}
+
+\begin{document}
+\maketitle
+
+본 문서는 배포는 가능하지만 출처는 밝혀주시길 바랍니다.
+
+\textbf{작성자}\\
+울산의대 서울아산병원\\
+소화기내과 조교수 최종기\\
+작성 일시: March 14, 2021\\
+버전: Version 1.0
+
+\hypertarget{basic-function-for-data-exploration}{%
+\subsection{1. Basic function for data
+exploration}\label{basic-function-for-data-exploration}}
+
+\hypertarget{uxc2e4uxc2b5uxc5d0-uxd544uxc694uxd55c-package-loading}{%
+\subsubsection{1.1 실습에 필요한 package
+loading}\label{uxc2e4uxc2b5uxc5d0-uxd544uxc694uxd55c-package-loading}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-uxbd88uxb7ecuxc624uxae30}{%
+\subsubsection{1.2 Data 불러오기}\label{data-uxbd88uxb7ecuxc624uxae30}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{현재 사용하고 있는 working directory 확인}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi"
+\end{verbatim}
+
+Mac과 Windows는 폴더 경로 표시 방식이 다르기때문에 주의!
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{실습을 위해 사용할 data 불러오기 (chb\_example.csv)}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Data (csv파일)를 불러오는 방식에는 2가지가 있다.}
+\CommentTok{\# 일반 data.frame으로 불러오는 경우}
+\NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"chb\_example.csv"}\NormalTok{) }\CommentTok{\# read.csv 이용}
+\FunctionTok{class}\NormalTok{(dat) }\CommentTok{\# data 형태가 data.frame}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "data.frame"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tibble형태로 불러오는 경우}
+\NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"chb\_example.csv"}\NormalTok{) }\CommentTok{\# read\_csv 이용}
+\FunctionTok{class}\NormalTok{(dat) }\CommentTok{\# data 형태가 tibble (tbl\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame" 
+\end{verbatim}
+
+일반적인 data.frame형태로 불러와도 되지만 tibble형태가 조금 더 깔끔하고
+tidyverse 명령어에 적합하다.\\
+하지만 기본적으로 tibble은 data.frame과 같은 속성에서 비롯되었다.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Data는 어떻게 생겼는지 구조 파악}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Data의 구조를 보여주는 기본 명령어}
+\FunctionTok{str}\NormalTok{(dat) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+spec_tbl_df [1,000 x 23] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ index_date : Date[1:1000], format: "2007-01-05" "2007-01-10" ...
+ $ gender     : chr [1:1000] "M" "F" "M" "M" ...
+ $ age        : num [1:1000] 54 45 49 26 50 33 49 50 49 50 ...
+ $ last_date  : Date[1:1000], format: "2014-07-18" "2016-08-25" ...
+ $ treat_gr   : chr [1:1000] "ETV" "ETV" "ETV" "ETV" ...
+ $ lc         : num [1:1000] 1 0 1 0 1 1 1 0 1 0 ...
+ $ dietpl     : num [1:1000] 0 0 0 0 0 0 0 0 0 0 ...
+ $ dietpl_date: Date[1:1000], format: "2017-09-13" "2016-08-25" ...
+ $ dietpl_yr  : num [1:1000] 10.84 9.76 10.59 6.02 2.36 ...
+ $ hcc        : num [1:1000] 1 0 0 0 0 0 1 0 0 0 ...
+ $ hcc_date   : Date[1:1000], format: "2014-07-18" "2016-08-25" ...
+ $ hcc_yr     : num [1:1000] 7.64 9.76 10.59 6.02 2.36 ...
+ $ b_lab_date : Date[1:1000], format: "2006-12-28" "2006-12-28" ...
+ $ b_alt      : num [1:1000] 67 32 106 159 94 32 104 143 31 239 ...
+ $ b_bil      : num [1:1000] 1.2 1.1 1.8 1.4 0.8 0.7 1.1 1.5 1.3 1.3 ...
+ $ b_inr      : num [1:1000] 1.17 0.9 1.03 1.04 1.12 0.88 1.1 NA 1.04 1.03 ...
+ $ b_cr       : num [1:1000] 1 0.6 1 0.93 0.9 1.2 0.9 0.7 0.7 1.2 ...
+ $ b_plt      : num [1:1000] 110 187 133 164 153 170 NA 165 157 166 ...
+ $ b_alb      : num [1:1000] 3.8 3.8 3.9 4.2 4.2 3.4 3.7 3.5 3.9 3.2 ...
+ $ b_eag      : num [1:1000] 1 0 0 0 1 1 1 1 1 1 ...
+ $ b_eab      : num [1:1000] 0 1 1 1 0 0 0 NA 0 0 ...
+ $ b_dna      : chr [1:1000] "31934936.8" "1100" "35968299.4" "9145608.2" ...
+ $ b_dna_log  : num [1:1000] 7.5 3.04 7.56 6.96 6.04 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   index_date = col_date(format = ""),
+  ..   gender = col_character(),
+  ..   age = col_double(),
+  ..   last_date = col_date(format = ""),
+  ..   treat_gr = col_character(),
+  ..   lc = col_double(),
+  ..   dietpl = col_double(),
+  ..   dietpl_date = col_date(format = ""),
+  ..   dietpl_yr = col_double(),
+  ..   hcc = col_double(),
+  ..   hcc_date = col_date(format = ""),
+  ..   hcc_yr = col_double(),
+  ..   b_lab_date = col_date(format = ""),
+  ..   b_alt = col_double(),
+  ..   b_bil = col_double(),
+  ..   b_inr = col_double(),
+  ..   b_cr = col_double(),
+  ..   b_plt = col_double(),
+  ..   b_alb = col_double(),
+  ..   b_eag = col_double(),
+  ..   b_eab = col_double(),
+  ..   b_dna = col_character(),
+  ..   b_dna_log = col_double()
+  .. )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 제일 위 6줄만 보여줌. 많이 쓰임}
+\FunctionTok{head}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 23
+  index_date gender   age last_date  treat_gr    lc dietpl dietpl_date dietpl_yr
+  <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>          <dbl>
+1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13      10.8 
+2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25       9.76
+3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21      10.6 
+4 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17       6.02
+5 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15       2.36
+6 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11       6.07
+# ... with 14 more variables: hcc <dbl>, hcc_date <date>, hcc_yr <dbl>,
+#   b_lab_date <date>, b_alt <dbl>, b_bil <dbl>, b_inr <dbl>, b_cr <dbl>,
+#   b_plt <dbl>, b_alb <dbl>, b_eag <dbl>, b_eab <dbl>, b_dna <chr>,
+#   b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 이것도 가능, 3줄만 보여줌}
+\FunctionTok{head}\NormalTok{(dat, }\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 3 x 23
+  index_date gender   age last_date  treat_gr    lc dietpl dietpl_date dietpl_yr
+  <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>          <dbl>
+1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13      10.8 
+2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25       9.76
+3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21      10.6 
+# ... with 14 more variables: hcc <dbl>, hcc_date <date>, hcc_yr <dbl>,
+#   b_lab_date <date>, b_alt <dbl>, b_bil <dbl>, b_inr <dbl>, b_cr <dbl>,
+#   b_plt <dbl>, b_alb <dbl>, b_eag <dbl>, b_eab <dbl>, b_dna <chr>,
+#   b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 제일 마지막 6줄 보여줌}
+\FunctionTok{tail}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 6 x 23
+  index_date gender   age last_date  treat_gr    lc dietpl dietpl_date dietpl_yr
+  <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>          <dbl>
+1 2011-01-04 M         58 2017-10-19 ETV          1      0 2017-10-19       6.89
+2 2011-01-05 F         49 2017-10-31 ETV          1      0 2017-10-31       6.92
+3 2011-01-07 M         44 2017-05-08 ETV          1      0 2017-05-08       6.42
+4 2011-01-07 M         48 2017-04-06 ETV          0      0 2017-04-06       6.34
+5 2011-01-12 M         64 2013-03-31 ETV          1      0 2017-10-24       6.88
+6 2011-01-12 F         51 2017-10-31 ETV          1      0 2017-10-31       6.9 
+# ... with 14 more variables: hcc <dbl>, hcc_date <date>, hcc_yr <dbl>,
+#   b_lab_date <date>, b_alt <dbl>, b_bil <dbl>, b_inr <dbl>, b_cr <dbl>,
+#   b_plt <dbl>, b_alb <dbl>, b_eag <dbl>, b_eab <dbl>, b_dna <chr>,
+#   b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tibble 형태의 data는 glimpse 형태 명령어를 쓰면 깔끔하게 요약되어 보인다}
+\FunctionTok{glimpse}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Rows: 1,000
+Columns: 23
+$ index_date  <date> 2007-01-05, 2007-01-10, 2007-01-11, 2007-01-12, 2007-0...
+$ gender      <chr> "M", "F", "M", "M", "M", "M", "M", "F", "F", "M", "M", ...
+$ age         <dbl> 54, 45, 49, 26, 50, 33, 49, 50, 49, 50, 32, 48, 51, 41,...
+$ last_date   <date> 2014-07-18, 2016-08-25, 2017-06-21, 2012-12-17, 2009-0...
+$ treat_gr    <chr> "ETV", "ETV", "ETV", "ETV", "ETV", "ETV", "ETV", "ETV",...
+$ lc          <dbl> 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0...
+$ dietpl      <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0...
+$ dietpl_date <date> 2017-09-13, 2016-08-25, 2017-06-21, 2012-12-17, 2009-0...
+$ dietpl_yr   <dbl> 10.844444, 9.763889, 10.594444, 6.016667, 2.355556, 6.0...
+$ hcc         <dbl> 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0...
+$ hcc_date    <date> 2014-07-18, 2016-08-25, 2017-06-21, 2012-12-17, 2009-0...
+$ hcc_yr      <dbl> 7.641667, 9.763889, 10.594444, 6.016667, 2.355556, 6.06...
+$ b_lab_date  <date> 2006-12-28, 2006-12-28, 2006-12-28, 2007-01-06, 2007-0...
+$ b_alt       <dbl> 67, 32, 106, 159, 94, 32, 104, 143, 31, 239, 359, 486, ...
+$ b_bil       <dbl> 1.2, 1.1, 1.8, 1.4, 0.8, 0.7, 1.1, 1.5, 1.3, 1.3, 0.9, ...
+$ b_inr       <dbl> 1.17, 0.90, 1.03, 1.04, 1.12, 0.88, 1.10, NA, 1.04, 1.0...
+$ b_cr        <dbl> 1.00, 0.60, 1.00, 0.93, 0.90, 1.20, 0.90, 0.70, 0.70, 1...
+$ b_plt       <dbl> 110, 187, 133, 164, 153, 170, NA, 165, 157, 166, 202, 1...
+$ b_alb       <dbl> 3.8, 3.8, 3.9, 4.2, 4.2, 3.4, 3.7, 3.5, 3.9, 3.2, 4.1, ...
+$ b_eag       <dbl> 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0...
+$ b_eab       <dbl> 0, 1, 1, 1, 0, 0, 0, NA, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, ...
+$ b_dna       <chr> "31934936.8", "1100", "35968299.4", "9145608.2", "10954...
+$ b_dna_log   <dbl> 7.504266, 3.041393, 7.555920, 6.961213, 6.039605, 2.954...
+\end{verbatim}
+
+\hypertarget{data-uxd2b9uxc9d5-uxd30cuxc545}{%
+\subsubsection{1.3 Data 특징
+파악}\label{data-uxd2b9uxc9d5-uxd30cuxc545}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Data의 구조 및 크기 파악}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 전체 data dimension}
+\FunctionTok{dim}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 1000   23
+\end{verbatim}
+
+1000행(케이스 혹은 환자), 23열(컬럼 혹은 variable)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 전체 케이스 숫자만 궁금할때}
+\FunctionTok{nrow}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 1000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# column name (=variable name)}
+\FunctionTok{colnames}\NormalTok{(dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] "index_date"  "gender"      "age"         "last_date"   "treat_gr"   
+ [6] "lc"          "dietpl"      "dietpl_date" "dietpl_yr"   "hcc"        
+[11] "hcc_date"    "hcc_yr"      "b_lab_date"  "b_alt"       "b_bil"      
+[16] "b_inr"       "b_cr"        "b_plt"       "b_alb"       "b_eag"      
+[21] "b_eab"       "b_dna"       "b_dna_log"  
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Data variable summary
+
+  \begin{itemize}
+  \tightlist
+  \item
+    index\_date: 투약 시작 시점
+  \item
+    gender: 성별
+  \item
+    age: 나이
+  \item
+    last\_date: 마지막 추적관찰
+  \item
+    treat\_gr: 항바이러스제 종류 (ETV: entecavir, TDF: tenofovir)
+  \item
+    lc: liver cirrhosis
+  \item
+    dietpl: Death or liver transplantation
+  \item
+    dietpl\_date: Date of death or liver transplantation
+  \item
+    dietpl\_yr: Time interval from index date to death/transplantation
+  \item
+    hcc: HCC
+  \item
+    hcc\_date: Date of HCC diagnosis
+  \item
+    hcc\_yr: Time interval from index date to HCC diagnosis
+  \item
+    b\_lab\_date: Baseline lab 시행 일자
+  \item
+    b\_alt: Baseline ALT
+  \item
+    b\_bil: Baseline total bilirubin
+  \item
+    b\_inr: Baseline PT(INR)
+  \item
+    b\_cr: Baseline creatinine
+  \item
+    b\_plt: Baseline platelet count
+  \item
+    b\_alb: Baseline albumin
+  \item
+    b\_eag: Baseline HBeAg status
+  \item
+    b\_eab: Baseline HBeAb status
+  \item
+    b\_dna: Baseline HBV DNA level
+  \item
+    b\_dna\_log: Baseline HBV DNA level (log)\\
+  \end{itemize}
+\item
+  \textbf{각 variable들의 특징 파악}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Age 변수 특성 파악}
+\CommentTok{\# 평균}
+\FunctionTok{mean}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 46.062
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 중앙값}
+\FunctionTok{median}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 47
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 표준편차}
+\FunctionTok{sd}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 10.20825
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 분산}
+\FunctionTok{var}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 104.2084
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 최소값}
+\FunctionTok{min}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 19
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 최대값}
+\FunctionTok{max}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 74
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 범위}
+\FunctionTok{range}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 19 74
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1사분위수{-}3사분위수 범위}
+\FunctionTok{IQR}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 한꺼번에 보여주기}
+\FunctionTok{summary}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  19.00   40.00   47.00   46.06   53.00   74.00 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Hmisc package의 describe 명령어가 유용}
+\CommentTok{\# Age 변수의 특징 파악}
+\NormalTok{Hmisc}\SpecialCharTok{::}\FunctionTok{describe}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+dat$age 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    1000        0       55    0.999    46.06    11.54       27       32 
+     .25      .50      .75      .90      .95 
+      40       47       53       59       62 
+
+lowest : 19 20 21 22 23, highest: 70 71 72 73 74
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{결측값이 존재하는 경우 데이터 특성 파악}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 결측값이 존재하는 variable은 평균 계산 불가}
+\FunctionTok{mean}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{b\_alb) }\CommentTok{\# NA로 표시됨}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 결측값이 존재하는 경우 \textquotesingle{}na.rm=TRUE\textquotesingle{} option 추가}
+\FunctionTok{mean}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{b\_alb, }\AttributeTok{na.rm=}\NormalTok{T) }\CommentTok{\# na.rm의미 = NA remove}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 3.734274
+\end{verbatim}
+
+NA를 제외하고 mean을 계산을 해준다
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{결측값(NA)이 존재하는지 확인하기}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# NA 존재 명령어 \textquotesingle{}is.na\textquotesingle{}}
+\CommentTok{\# is.na 결과값이 True = 결측값}
+\CommentTok{\# is.na 결과값이 False = 결측값 아님}
+\FunctionTok{is.na}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{b\_inr[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
+[13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+\end{verbatim}
+
+'b\_inr'변수의 1-20행까지 결측값이 존재하는지 확인가능
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 전체 1,000개 행중에 b\_inr 변수의 총 NA는 몇개?}
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{b\_inr))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 16
+\end{verbatim}
+
+b\_inr이 NA일경우 true (1로 게산됨) 이경우를 모두 sum하게 되니깐 총
+16개의 NA가 b\_inr에 존재함
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# summary로도 확인가능}
+\FunctionTok{summary}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{b\_inr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.840   1.030   1.090   1.134   1.180   3.130      16 
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Data 형태 (class) 확인하기}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# is.*() 함수를 이용한다.}
+
+\FunctionTok{is.data.frame}\NormalTok{(dat)  }\CommentTok{\# data.frame?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.matrix}\NormalTok{(dat)  }\CommentTok{\# matrix?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.character}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)  }\CommentTok{\# 문자형 데이터인 범주형 변수? }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.character}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{gender)  }\CommentTok{\# 문자형 데이터인 범주형 변수? }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.numeric}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)  }\CommentTok{\# 수치형 데이터인 연속형 변수?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.numeric}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{gender)  }\CommentTok{\# 수치형 데이터인 연속형 변수?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.integer}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)  }\CommentTok{\# 정수형 데이터인 연속형 변수?}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.double}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{age)  }\CommentTok{\# 더블형 데이터인 연속형 변수? }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] TRUE
+\end{verbatim}
+
+\textless br?\textgreater{}
+
+\hypertarget{baseline-characteristics-table-uxb9ccuxb4e4uxae30}{%
+\subsubsection{1.4 Baseline characteristics Table
+만들기}\label{baseline-characteristics-table-uxb9ccuxb4e4uxae30}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# moonBook package를 이용하여 descriptive analysis}
+\CommentTok{\# treat\_gr (ETV:entecavir, TDF:tenofovir)에 따른 두군의 \# 비교}
+\FunctionTok{library}\NormalTok{(moonBook)}
+\FunctionTok{mytable}\NormalTok{(treat\_gr}\SpecialCharTok{\textasciitilde{}}\NormalTok{age}\SpecialCharTok{+}\NormalTok{gender,}\AttributeTok{data=}\NormalTok{dat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Descriptive Statistics by 'treat_gr'
+_____________________________________ 
+            ETV         TDF       p  
+          (N=506)     (N=494)  
+------------------------------------- 
+ age    46.0 ± 10.2 46.1 ± 10.2 0.822
+ gender                         0.178
+   - F  150 (29.6%) 167 (33.8%)      
+   - M  356 (70.4%) 327 (66.2%)      
+------------------------------------- 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 전체 그룹도 표시하기}
+\FunctionTok{mytable}\NormalTok{(treat\_gr}\SpecialCharTok{\textasciitilde{}}\NormalTok{age}\SpecialCharTok{+}\NormalTok{gender, }\AttributeTok{data=}\NormalTok{dat, }\AttributeTok{show.total=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+      Descriptive Statistics by 'treat_gr'      
+_________________________________________________ 
+            ETV         TDF        Total      p  
+          (N=506)     (N=494)    (N=1000)  
+------------------------------------------------- 
+ age    46.0 ± 10.2 46.1 ± 10.2 46.1 ± 10.2 0.822
+ gender                                     0.178
+   - F  150 (29.6%) 167 (33.8%) 317 (31.7%)      
+   - M  356 (70.4%) 327 (66.2%) 683 (68.3%)      
+------------------------------------------------- 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# mean +/{-} SD 말고 median [IQR]로 표시하기}
+\FunctionTok{mytable}\NormalTok{(treat\_gr}\SpecialCharTok{\textasciitilde{}}\NormalTok{age}\SpecialCharTok{+}\NormalTok{gender,}\AttributeTok{data=}\NormalTok{dat, }\AttributeTok{method=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+     Descriptive Statistics by 'treat_gr'     
+_______________________________________________ 
+              ETV              TDF          p  
+            (N=506)          (N=494)     
+----------------------------------------------- 
+ age    47.0 [40.0;53.0] 46.0 [40.0;53.0] 0.979
+ gender                                   0.178
+   - F    150 (29.6%)      167 (33.8%)         
+   - M    356 (70.4%)      327 (66.2%)         
+----------------------------------------------- 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# treat\_gr에 따른 모든 변수 비교}
+\FunctionTok{mytable}\NormalTok{(treat\_gr}\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data=}\NormalTok{dat) }\CommentTok{\# \textasciitilde{}. 의 의미는 \textquotesingle{}treat\_gr\textquotesingle{}제외하고 나머지 모든 변수를 넣어달라는 의미}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+             Descriptive Statistics by 'treat_gr'            
+______________________________________________________________ 
+                      ETV                   TDF            p  
+                    (N=506)               (N=494)       
+-------------------------------------------------------------- 
+ index_date  2007-01-05-2011-01-12 2007-01-05-2011-01-12      
+ gender                                                  0.178
+   - F            150 (29.6%)           167 (33.8%)           
+   - M            356 (70.4%)           327 (66.2%)           
+ age              46.0 ± 10.2           46.1 ± 10.2      0.822
+ last_date   2007-12-18-2017-11-01 2007-12-18-2017-11-01      
+ lc                                                      0.498
+   - 0            234 (46.2%)           240 (48.6%)           
+   - 1            272 (53.8%)           254 (51.4%)           
+ dietpl                                                  0.072
+   - 0            492 (97.2%)           489 (99.0%)           
+   - 1            14 ( 2.8%)             5 ( 1.0%)            
+ dietpl_date 2009-01-28-2017-11-01 2009-01-28-2017-11-01      
+ dietpl_yr         7.4 ±  2.8            6.7 ±  2.2      0.000
+ hcc                                                     0.050
+   - 0            418 (82.6%)           431 (87.2%)           
+   - 1            88 (17.4%)            63 (12.8%)            
+ hcc_date    2007-12-18-2017-11-01 2007-12-18-2017-11-01      
+ hcc_yr            6.8 ±  3.1            6.2 ±  2.4      0.003
+ b_lab_date  2006-12-28-2011-01-17 2006-12-28-2011-01-17      
+ b_alt           195.9 ± 257.7         203.2 ± 303.5     0.682
+ b_bil             1.7 ±  2.1            1.9 ±  3.4      0.158
+ b_inr             1.1 ±  0.2            1.2 ±  0.2      0.003
+ b_cr              0.9 ±  0.5            1.0 ±  0.8      0.152
+ b_plt           148.5 ± 58.8          149.0 ± 58.5      0.894
+ b_alb             3.7 ±  0.5            3.8 ±  0.6      0.239
+ b_eag                                                   0.009
+   - 0            159 (31.4%)           195 (39.5%)           
+   - 1            347 (68.6%)           299 (60.5%)           
+ b_eab                                                   0.024
+   - 0            300 (68.6%)           257 (61.0%)           
+   - 1            137 (31.4%)           164 (39.0%)           
+ b_dna         unique values:466     unique values:466        
+ b_dna_log         6.9 ±  1.9            6.4 ±  2.0      0.000
+-------------------------------------------------------------- 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 만든 table 저장하기}
+\NormalTok{table1}\OtherTok{\textless{}{-}}\FunctionTok{mytable}\NormalTok{(treat\_gr}\SpecialCharTok{\textasciitilde{}}\NormalTok{age}\SpecialCharTok{+}\NormalTok{gender, }\AttributeTok{data=}\NormalTok{dat)}
+\NormalTok{table1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Descriptive Statistics by 'treat_gr'
+_____________________________________ 
+            ETV         TDF       p  
+          (N=506)     (N=494)  
+------------------------------------- 
+ age    46.0 ± 10.2 46.1 ± 10.2 0.822
+ gender                         0.178
+   - F  150 (29.6%) 167 (33.8%)      
+   - M  356 (70.4%) 327 (66.2%)      
+------------------------------------- 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mycsv}\NormalTok{(table1, }\AttributeTok{file=}\StringTok{"table1.csv"}\NormalTok{) }
+\CommentTok{\# mycsv(table객체, file="파일이름")}
+\end{Highlighting}
+\end{Shaded}
+
+특별히 경로를 지정해주지 않으면현재 working directory에 저장이 된다.
+
+\hypertarget{data-manipulation-using-dplyr}{%
+\subsection{2. Data manipulation using
+dplyr}\label{data-manipulation-using-dplyr}}
+
+\hypertarget{key-five-functions-in-tidyverse}{%
+\subsubsection{2.1 Key five functions in
+Tidyverse}\label{key-five-functions-in-tidyverse}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  filter
+\item
+  select
+\item
+  arrange
+\item
+  mutate
+\item
+  summarise
+\end{enumerate}
+
+\hypertarget{filter-function}{%
+\paragraph{2.1.1 Filter function}\label{filter-function}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 원본 data는 손대지말고 연습을 위해 복사본 (dat1)을 만들자}
+\NormalTok{dat1 }\OtherTok{\textless{}{-}}\NormalTok{ dat}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{R은 되돌아가기 (Ctrl+Z)기능이 없기에, data의 변형이 우려되면
+복사본을 만들어두고 가능하면 original data는 그대로 두는것이 좋다 }
+
+\begin{itemize}
+\tightlist
+\item
+  filter는 말그대로 필터다. 엑셀의 그 깔대기모양의 `필터'
+\item
+  즉 필요한 조건에 만족하는 값만을 출력
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Gender (Male: M or Female: F)를 이용}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{count}\NormalTok{(gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 2 x 2
+  gender     n
+* <chr>  <int>
+1 F        317
+2 M        683
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  dat1에서 male값만을 선택
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(gender }\SpecialCharTok{==} \StringTok{"M"}\NormalTok{) }\CommentTok{\# 같다는= 한개가 아니고 == 2개!}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 683 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 3 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 4 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 5 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 6 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 7 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+ 8 2007-02-01 M         32 2010-09-30 ETV          0      0 2010-09-30 
+ 9 2007-02-01 M         48 2010-04-23 ETV          0      0 2010-04-23 
+10 2007-02-01 M         51 2017-08-03 ETV          0      0 2017-08-03 
+# ... with 673 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(gender }\SpecialCharTok{!=} \StringTok{"F"}\NormalTok{) }\CommentTok{\# 같지 않다는 != 로 표현}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 683 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 3 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 4 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 5 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 6 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 7 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+ 8 2007-02-01 M         32 2010-09-30 ETV          0      0 2010-09-30 
+ 9 2007-02-01 M         48 2010-04-23 ETV          0      0 2010-04-23 
+10 2007-02-01 M         51 2017-08-03 ETV          0      0 2017-08-03 
+# ... with 673 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+즉 위의 2개 코드는 같은 값을 출력 해준다.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{복합 조건 (AND)}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# older than 50 years old}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(age}\SpecialCharTok{\textgreater{}=}\DecValTok{50}\NormalTok{) }\CommentTok{\# 385명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 385 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 3 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 4 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+ 5 2007-02-01 M         51 2017-08-03 ETV          0      0 2017-08-03 
+ 6 2007-02-08 M         50 2012-11-21 ETV          1      0 2012-11-21 
+ 7 2007-02-08 M         51 2011-01-21 ETV          1      0 2011-01-21 
+ 8 2007-02-09 F         62 2010-07-28 ETV          1      0 2010-07-28 
+ 9 2007-02-14 F         51 2009-06-17 ETV          1      0 2009-06-17 
+10 2007-02-15 F         50 2012-01-31 ETV          1      1 2012-01-31 
+# ... with 375 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# older than 50 years old + Male}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(gender }\SpecialCharTok{==} \StringTok{"M"}\NormalTok{, age }\SpecialCharTok{\textgreater{}=}\DecValTok{50}\NormalTok{) }\CommentTok{\# 220명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 220 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 3 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+ 4 2007-02-01 M         51 2017-08-03 ETV          0      0 2017-08-03 
+ 5 2007-02-08 M         50 2012-11-21 ETV          1      0 2012-11-21 
+ 6 2007-02-08 M         51 2011-01-21 ETV          1      0 2011-01-21 
+ 7 2007-02-15 M         52 2011-10-13 ETV          1      0 2011-10-13 
+ 8 2007-02-28 M         53 2008-12-25 ETV          1      1 2009-01-28 
+ 9 2007-03-09 M         51 2012-03-05 ETV          1      0 2012-03-05 
+10 2007-03-15 M         52 2010-12-16 ETV          0      0 2010-12-16 
+# ... with 210 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# older than 50 years old + Male + Cirrhosis}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(gender }\SpecialCharTok{==} \StringTok{"M"}\NormalTok{, age }\SpecialCharTok{\textgreater{}=}\DecValTok{50}\NormalTok{, lc}\SpecialCharTok{==}\DecValTok{1}\NormalTok{) }\CommentTok{\# 152명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 152 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 3 2007-02-08 M         50 2012-11-21 ETV          1      0 2012-11-21 
+ 4 2007-02-08 M         51 2011-01-21 ETV          1      0 2011-01-21 
+ 5 2007-02-15 M         52 2011-10-13 ETV          1      0 2011-10-13 
+ 6 2007-02-28 M         53 2008-12-25 ETV          1      1 2009-01-28 
+ 7 2007-03-09 M         51 2012-03-05 ETV          1      0 2012-03-05 
+ 8 2007-03-22 M         54 2009-12-03 ETV          1      0 2009-12-03 
+ 9 2007-03-29 M         57 2014-08-22 ETV          1      0 2015-05-26 
+10 2007-04-17 M         61 2017-08-21 ETV          1      0 2017-08-21 
+# ... with 142 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+각 조건들간의 AND 조합은 , \& 어느것을 써도 된다.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{복합 조건 (OR)}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# age 30세 미만이거나 80세 이상인 경우}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(age }\SpecialCharTok{\textless{}}\DecValTok{30} \SpecialCharTok{|}\NormalTok{ age }\SpecialCharTok{\textgreater{}}\DecValTok{80}\NormalTok{) }\CommentTok{\# 74명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 74 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 2 2007-02-16 M         29 2017-07-14 ETV          0      0 2017-07-14 
+ 3 2007-03-02 M         25 2012-04-30 ETV          0      0 2012-04-30 
+ 4 2007-03-08 M         24 2017-04-12 ETV          0      0 2017-04-12 
+ 5 2007-04-02 F         22 2010-05-25 ETV          0      0 2010-05-25 
+ 6 2007-04-13 M         24 2015-09-22 ETV          0      0 2015-09-22 
+ 7 2007-04-16 M         29 2017-07-20 ETV          0      0 2017-07-20 
+ 8 2007-04-19 M         27 2009-02-27 ETV          0      0 2009-02-27 
+ 9 2007-05-03 M         26 2009-04-03 ETV          0      0 2009-04-03 
+10 2007-07-03 F         24 2016-09-13 ETV          0      0 2016-09-13 
+# ... with 64 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# age 70세 이상이거나 cirrhosis 있는 경우}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(age }\SpecialCharTok{\textgreater{}}\DecValTok{70} \SpecialCharTok{|}\NormalTok{ lc}\SpecialCharTok{==}\DecValTok{1}\NormalTok{) }\CommentTok{\# 526명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 526 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 3 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 4 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 5 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 6 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+ 7 2007-02-02 M         41 2011-07-07 ETV          1      0 2011-07-07 
+ 8 2007-02-08 M         50 2012-11-21 ETV          1      0 2012-11-21 
+ 9 2007-02-08 M         51 2011-01-21 ETV          1      0 2011-01-21 
+10 2007-02-09 F         62 2010-07-28 ETV          1      0 2010-07-28 
+# ... with 516 more rows, and 15 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{복합 여러 조건 (AND + OR, not)}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 80세 이상의 남성이나(OR) 30세 미만의 여자}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{( (age}\SpecialCharTok{\textgreater{}}\DecValTok{80} \SpecialCharTok{\&}\NormalTok{ gender }\SpecialCharTok{==}\StringTok{"M"}\NormalTok{) }\SpecialCharTok{|}\NormalTok{ (age}\SpecialCharTok{\textless{}}\DecValTok{30} \SpecialCharTok{\&}\NormalTok{ gender }\SpecialCharTok{==}\StringTok{"F"}\NormalTok{)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 20 x 23
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-04-02 F         22 2010-05-25 ETV          0      0 2010-05-25 
+ 2 2007-07-03 F         24 2016-09-13 ETV          0      0 2016-09-13 
+ 3 2007-11-12 F         22 2009-08-17 ETV          0      0 2009-08-17 
+ 4 2008-02-04 F         29 2011-07-21 ETV          0      0 2011-07-21 
+ 5 2008-06-05 F         23 2017-09-29 ETV          1      0 2017-09-29 
+ 6 2008-07-11 F         25 2011-07-13 ETV          0      0 2011-07-13 
+ 7 2008-07-26 F         28 2017-02-20 ETV          1      0 2017-02-20 
+ 8 2008-12-23 F         28 2017-07-20 TDF          0      0 2017-07-20 
+ 9 2008-12-29 F         23 2017-09-11 TDF          0      0 2017-09-11 
+10 2009-01-13 F         26 2017-06-02 TDF          0      0 2017-06-02 
+11 2009-02-02 F         25 2013-05-23 TDF          0      0 2013-05-23 
+12 2009-02-09 F         27 2014-06-09 TDF          0      0 2014-06-09 
+13 2009-04-16 F         22 2013-01-09 TDF          0      0 2013-01-09 
+14 2009-04-17 F         26 2015-01-12 TDF          0      0 2015-01-12 
+15 2009-05-26 F         25 2013-02-18 TDF          0      0 2013-02-18 
+16 2009-07-31 F         25 2012-12-10 TDF          0      0 2012-12-10 
+17 2009-08-28 F         25 2017-03-24 TDF          1      0 2017-03-24 
+18 2009-09-23 F         29 2017-06-21 TDF          0      0 2017-06-21 
+19 2009-09-24 F         25 2013-01-10 TDF          0      0 2013-01-10 
+20 2010-01-28 F         26 2012-03-27 TDF          1      0 2012-03-27 
+# ... with 15 more variables: dietpl_yr <dbl>, hcc <dbl>, hcc_date <date>,
+#   hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>, b_inr <dbl>,
+#   b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>, b_eab <dbl>,
+#   b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 80세 이상이면서 간경화가 없는 환자}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(age }\SpecialCharTok{\textgreater{}=}\DecValTok{80} \SpecialCharTok{\&}\NormalTok{ lc}\SpecialCharTok{!=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 0 x 23
+# ... with 23 variables: index_date <date>, gender <chr>, age <dbl>,
+#   last_date <date>, treat_gr <chr>, lc <dbl>, dietpl <dbl>,
+#   dietpl_date <date>, dietpl_yr <dbl>, hcc <dbl>, hcc_date <date>,
+#   hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>, b_inr <dbl>,
+#   b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>, b_eab <dbl>,
+#   b_dna <chr>, b_dna_log <dbl>
+\end{verbatim}
+
+수학에서 먼저 해야되는 연산은 ()로 묶어 주듯이 조건별로 적절히 ()로
+묶어준다.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{유용한 명령어}
+\end{itemize}
+
+{[}index\_date{]}로 부터 연도(year)만 분리해서 variable을 새로 만들자
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1}\SpecialCharTok{$}\NormalTok{year}\OtherTok{\textless{}{-}}\FunctionTok{year}\NormalTok{(dat1}\SpecialCharTok{$}\NormalTok{index\_date)}
+\end{Highlighting}
+\end{Shaded}
+
+Error가 날겁니다.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(dat1}\SpecialCharTok{$}\NormalTok{index\_date)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Date"
+\end{verbatim}
+
+dat1\$index\_date의 형태는 ``Date'' 입니다.
+
+``Date'' 형태의 data에서 자동으로 Year만 분리해줄 수 있는 함수가
+필요합니다. (lubridate package)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lubridate)}
+\NormalTok{dat1}\SpecialCharTok{$}\NormalTok{year}\OtherTok{\textless{}{-}}\FunctionTok{year}\NormalTok{(dat1}\SpecialCharTok{$}\NormalTok{index\_date)}
+
+\CommentTok{\# year 분포를 봅시다.}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{count}\NormalTok{(year)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 5 x 2
+   year     n
+* <dbl> <int>
+1  2007   199
+2  2008   315
+3  2009   287
+4  2010   193
+5  2011     6
+\end{verbatim}
+
+만약 filter를 이용해서 2007, 2008, 2009년 자료만 골라낸다면?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{\textless{}=} \DecValTok{2009}\NormalTok{) }\CommentTok{\# 801명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 801 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25 
+ 3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 4 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 5 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 6 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 7 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 8 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 9 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+10 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+# ... with 791 more rows, and 16 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+만약 2007, 2008, 2010년을 골라내야 한다면
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(year}\SpecialCharTok{==}\DecValTok{2007} \SpecialCharTok{|}\NormalTok{ year}\SpecialCharTok{==}\DecValTok{2008} \SpecialCharTok{|}\NormalTok{ year}\SpecialCharTok{==}\DecValTok{2010}\NormalTok{) }\CommentTok{\# 707명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 707 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25 
+ 3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 4 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 5 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 6 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 7 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 8 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 9 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+10 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+# ... with 697 more rows, and 16 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+하지만 골라내야될 조건이 많아지거나 불규칙적이다면?
+
+\%in\%을 사용해보자
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{2007}\NormalTok{, }\DecValTok{2008}\NormalTok{, }\DecValTok{2010}\NormalTok{)) }\CommentTok{\# 같은 결과}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 707 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25 
+ 3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 4 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 5 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 6 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 7 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 8 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 9 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+10 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+# ... with 697 more rows, and 16 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+between을 이용해도 된다
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 30세이상 80세 이하}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(age }\SpecialCharTok{\textgreater{}=}\DecValTok{30} \SpecialCharTok{\&}\NormalTok{ age }\SpecialCharTok{\textless{}}\DecValTok{80}\NormalTok{) }\CommentTok{\# 926명}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 926 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25 
+ 3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 4 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 5 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 6 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 7 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 8 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+ 9 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+10 2007-02-01 M         32 2010-09-30 ETV          0      0 2010-09-30 
+# ... with 916 more rows, and 16 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# between 이용시}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{(}\FunctionTok{between}\NormalTok{(age, }\DecValTok{30}\NormalTok{,}\DecValTok{80}\NormalTok{)) }\CommentTok{\#이상, 이하의미로 30, 80은 포함됨!}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 926 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25 
+ 3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 4 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 5 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 6 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 7 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 8 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+ 9 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+10 2007-02-01 M         32 2010-09-30 ETV          0      0 2010-09-30 
+# ... with 916 more rows, and 16 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+주의! between 이용시 지정값은 포함됨
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{결측값이 없는 자료만 filter}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# b\_inr (prothrombine time INR)의 결측값은 몇개?}
+\FunctionTok{summary}\NormalTok{(dat1}\SpecialCharTok{$}\NormalTok{b\_inr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  0.840   1.030   1.090   1.134   1.180   3.130      16 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 혹은}
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(dat1}\SpecialCharTok{$}\NormalTok{b\_inr)) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 16
+\end{verbatim}
+
+HBeAg 값이 있는 자료만 filter 해보자
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{( }\FunctionTok{is.na}\NormalTok{(b\_inr)) }\CommentTok{\# 이렇게 하면 b\_inr이 NA만 나온다}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 16 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-31 F         50 2017-08-24 ETV          0      0 2017-08-24 
+ 2 2007-02-15 M         52 2011-10-13 ETV          1      0 2011-10-13 
+ 3 2007-08-01 M         58 2013-03-31 ETV          1      0 2017-09-20 
+ 4 2007-08-01 M         48 2009-09-30 ETV          1      0 2009-09-30 
+ 5 2007-08-02 M         48 2017-09-14 ETV          1      0 2017-09-14 
+ 6 2007-08-02 M         48 2017-07-04 ETV          1      0 2017-07-04 
+ 7 2007-08-07 M         25 2009-11-05 ETV          0      0 2009-11-05 
+ 8 2007-08-09 M         48 2009-08-27 ETV          0      0 2009-08-27 
+ 9 2008-06-24 M         46 2013-07-16 ETV          1      0 2013-07-16 
+10 2008-06-24 M         41 2012-12-28 ETV          0      0 2012-12-28 
+11 2008-06-26 F         53 2017-09-13 ETV          1      0 2017-09-13 
+12 2008-06-26 F         48 2011-09-05 ETV          1      0 2014-07-15 
+13 2008-06-26 M         45 2017-07-31 ETV          1      0 2017-07-31 
+14 2008-06-26 F         52 2017-06-14 ETV          0      0 2017-06-14 
+15 2008-06-27 F         30 2013-04-16 ETV          0      0 2013-04-16 
+16 2008-06-27 M         44 2017-07-04 ETV          0      0 2017-07-04 
+# ... with 16 more variables: dietpl_yr <dbl>, hcc <dbl>, hcc_date <date>,
+#   hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>, b_inr <dbl>,
+#   b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>, b_eab <dbl>,
+#   b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 따라서}
+\NormalTok{dat1 }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{filter}\NormalTok{( }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(b\_inr)) }\CommentTok{\#즉 NA가 !(not)값들만 나온다.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# A tibble: 984 x 24
+   index_date gender   age last_date  treat_gr    lc dietpl dietpl_date
+   <date>     <chr>  <dbl> <date>     <chr>    <dbl>  <dbl> <date>     
+ 1 2007-01-05 M         54 2014-07-18 ETV          1      0 2017-09-13 
+ 2 2007-01-10 F         45 2016-08-25 ETV          0      0 2016-08-25 
+ 3 2007-01-11 M         49 2017-06-21 ETV          1      0 2017-06-21 
+ 4 2007-01-12 M         26 2012-12-17 ETV          0      0 2012-12-17 
+ 5 2007-01-18 M         50 2009-05-15 ETV          1      0 2009-05-15 
+ 6 2007-01-18 M         33 2013-01-11 ETV          1      0 2013-01-11 
+ 7 2007-01-26 M         49 2013-03-31 ETV          1      0 2017-08-07 
+ 8 2007-01-31 F         49 2009-03-20 ETV          1      0 2009-03-20 
+ 9 2007-02-01 M         50 2017-09-12 ETV          0      0 2017-09-12 
+10 2007-02-01 M         32 2010-09-30 ETV          0      0 2010-09-30 
+# ... with 974 more rows, and 16 more variables: dietpl_yr <dbl>, hcc <dbl>,
+#   hcc_date <date>, hcc_yr <dbl>, b_lab_date <date>, b_alt <dbl>, b_bil <dbl>,
+#   b_inr <dbl>, b_cr <dbl>, b_plt <dbl>, b_alb <dbl>, b_eag <dbl>,
+#   b_eab <dbl>, b_dna <chr>, b_dna_log <dbl>, year <dbl>
+\end{verbatim}
+
+\end{document}
