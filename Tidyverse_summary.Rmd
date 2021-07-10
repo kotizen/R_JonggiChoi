@@ -3,9 +3,12 @@ title: "젊은 임상 연구자들을 위한 필수 R"
 author: "Jonggi Choi"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
-  html_document: default
+  html_document: 
+   toc : true
+   toc_float : true
   word_document: default
   pdf_document: default
+bibilography: bibilography.bib
 editor_options:
   chunk_output_type: console
 ---
@@ -34,7 +37,8 @@ div.blue
 버전: Version 1.0
 :::
    
-     
+# Chpater 1. R 설치 및 기본 문법
+
 ## 1. Basic function for data exploration
 ### 1.1 실습에 필요한 package loading
 ```{r}
@@ -87,6 +91,17 @@ glimpse(dat)
 dim(dat)
 ```
 1000행(케이스 혹은 환자), 23열(컬럼 혹은 variable)
+
+```{r}
+knitr::kable(
+  dat[1:5, ], 
+  caption = "Baseline characteristics"
+)
+```
+
+```{r}
+knitr::include_graphics("capture.jpg")
+```
 
 ```{r}
 # 전체 케이스 숫자만 궁금할때
@@ -364,4 +379,29 @@ dat1 %>%
    filter( !is.na(b_inr)) #즉 NA가 !(not)값들만 나온다.
 ```
 
+```{r, include=FALSE}
+@article{choi2019longitudinal,
+  title={Longitudinal assessment of three serum biomarkers to detect very early-stage hepatocellular carcinoma},
+  author={Choi, Jonggi and Kim, Gi-Ae and Han, Seungbong and Lee, Woochang and Chun, Sail and Lim, Young-Suk},
+  journal={Hepatology},
+  volume={69},
+  number={5},
+  pages={1983--1994},
+  year={2019}
+}
+```
 
+
+# Chapter 2. 실전 임상 연구
+
+# Chapter 3. Data Exploration and Cleansing
+
+# Chapter 4. Logistic Regression Analysis
+
+# Chapter 5. Survival Analysis
+
+# Chapter 6. ROC Analysis
+
+# Chapter 7. Data Visualization
+
+# Chapter 8. Propensity Score Matching Analysis

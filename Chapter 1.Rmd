@@ -1,0 +1,41 @@
+---
+title: "임상의학 연구자들을 위한 필수 R"
+author: "Jonggi Choi"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document: 
+    toc: yes
+    toc_float: yes
+  word_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+```{r setup, include=FALSE }
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{=html}
+<style>
+div.blue 
+{background-color:lightblue; border-radius: 5px; padding: 10px;}
+</style>
+```
+::: {.blue}
+본 문서는 배포는 가능하지만 출처는 밝혀주시길 바랍니다.
+
+**작성자: 최종기**\
+
+```{r profile, echo=FALSE, out.width='15%'}
+knitr::include_graphics("/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi/Figures_rmd/profile_choi.jpg")
+```
+
+울산의대 서울아산병원\
+소화기내과 조교수\
+작성 일시: `r format(Sys.time(), '%B %d, %Y')`\
+버전: Version 1.0
+:::

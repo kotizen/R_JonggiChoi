@@ -1,0 +1,675 @@
+---
+title: "임상의학 연구자들을 위한 필수 R"
+author: "Jonggi Choi"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document: 
+    toc: yes
+    toc_float: yes
+  word_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE }
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{=html}
+<style>
+div.blue 
+{background-color:lightblue; border-radius: 5px; padding: 10px;}
+</style>
+```
+::: {.blue}
+본 문서는 배포는 가능하지만 출처는 밝혀주시길 바랍니다.
+
+**작성자: 최종기**\
+
+```{r profile, echo=FALSE, out.width='15%'}
+knitr::include_graphics("/Users/ChoiJongGi/Dropbox/Data science study/R_JonggiChoi/Figures_rmd/profile_choi.jpg")
+```
+
+울산의대 서울아산병원\
+소화기내과 조교수\
+작성 일시: `r format(Sys.time(), '%B %d, %Y')`\
+버전: Version 1.0
+:::
+
+## Chapter 4. Data manipulation  
+<br/>
+
+### 4.1 Tidyverse 핵심 5가지 기능  
+<br/>
+
+
+-   **본 chapter 실습을 위해 필요한 package를 loading하자**\
+```{r}
+library(tidyverse)
+library(moonBook)
+library(Hmisc)
+```
+<br/>
+
+
+
+- **tidyverse 실습을 위해 새로운 data를 불러오자**
+```{r}
+dat <- read_csv("chb_example2.csv")
+```
+
+> R을 이용하여 data를 다룰때 excel과 같이 CTRL+Z의 되돌아오기 기능이 없다.\
+> 따라서 raw data는 그대로 두고 copy data를 만들어서 manipulation, cleansing 하는것을 추천한다.\
+> 이렇게 해야만 data manipulation 중 잘못하였을 경우 언제든 raw data로 돌아갈 수 있다.
+
+`dat`를 `dat1`으로 새롭게 복사를 ㅎ먼저해두자. 앞으로 `dat1`으로 연습할 예정이다.
+
+```{r}
+dat1 <- dat
+```
+<br/>
+
+
+- **Tidyverse 문법중 data manipulation에서 가장 많이 사용하는 기능은 아래 5가지이다. **   
+
+1. select
+1. filter
+1. arrange
+1. mutate
+1. summarize  
+<br/>
+
+
+
+### 4.2 Select
+<br/>
+
+-   **필요한 column (변수)를 select 한다는 개념으로 보면 된다.**\
+    우선 data에 어떤 column들이 있는지 부터 확인해보자
+    
+```{r}
+colnames(dat1)
+```
+
+`dat1`에는 현재 79개의 column들이 있다.\
+이중 liver function test의 일부인 `alt`(ALT), `bil`(total bilirubin), `alb`(albumin) column만 선택해보자
+
+```{r}
+dat1 %>% 
+  select(alt, bil, alb) %>% 
+  print(n=5) # 5줄만 보여달라는 코드
+```
+<br/>
+
+-   **선택할 변수이름대신 column 순서 (번호)를 이용할 수 있다.**  
+`alt`, `bil`, `alb` 변수는 15, 16, 19번째 변수이다.
+
+```{r}
+dat1 %>% 
+  select(15, 16, 20) %>% 
+  print(n=5)
+```
+같은 결과를 보여준다.\
+<br/>
+
+-   **Column 번호를 이용할 경우 여러가지 방식이 가능하다.**
+
+```{r}
+dat1 %>% 
+  select(1:4, 15:18, 28) %>% # 1,2,3,4, 15,16,17,18, 28번째 변수 선택
+  print(n=5)
+```
+변수 이름을 직접 이용해서 **:** option을 사용할 수도 있다.
+```{r}
+dat1 %>% 
+  select(y1_ast:y1_dna_log) %>% 
+  print(n=5)
+```
+<br/>
+
+-   **반대로 특정 column을 제외할 수도 있다.**\
+    `id`, `index_dat` 변수를 제거해보자.\
+
+```{r}
+dat1 %>% 
+  select(-id, -index_date) %>% 
+  colnames()
+```
+
+첫번째 column이 `gender`부터 시작한다.\
+기존 `dat1`하고 비교해보자
+
+```{r}
+colnames(dat1)
+```
+
+`id`, `index_date`가 없어진것을 알 수 있다.\
+<br/>
+
+-   **역시 특정 column을 번호를 이용해서 제외할 수 있다.**
+
+```{r}
+dat1 %>% 
+  select(-1, -2) %>% # id, index_date 제외
+  colnames()
+```
+
+<br/>
+
+-   **제외할때도 column 번호를 다양하게 이용할 수 있다.**
+
+```{r}
+dat1 %>% 
+  select(-(1:5), 7, -(10:14)) %>%  #1,2,3,4,5,  7,  10,11,12,13,14번째 변수 제외
+  colnames()
+```
+
+<br/>
+
+-   **같은 특성(이름, 문자)을 가진 column만 select 해보자**\
+    baseline, 1년, 2년, 3년, 4년, 5년 ALT 변수들만 select 해보자\
+    즉 `alt`, `y1_alt`, `y2_alt`, `y3_alt`, `y4_alt`, `y5_alt` 변수들만 select 해보자\
+
+```{r}
+dat1 %>% 
+  select(alt, y1_alt, y2_alt, y3_alt, y4_alt, y5_alt) %>% 
+  colnames()
+```
+
+하지만 해당 변수가 많을 경우 code가 길어지게 된다.\
+아래와 같은 방법이 훨씬 유용할 수 있다.
+
+```{r}
+dat1 %>% 
+  select( contains('alt'))%>%    # 변수 이름에 alt가 들어가는 경우만 select
+  colnames()
+```
+
+그렇다면 1년째측정한 변수들만 선택을 하려면 어떻게 할 수 있을까? 즉 `y1_lab_date`, `y1_ast`, `y1_alt`등 'y1_X'로 시작하는 변수들만 골라내보자
+
+```{r}
+dat1 %>% 
+  select( contains('y1')) %>% 
+  colnames()
+```
+
+아래와 같은 방법도 가능하다
+
+```{r}
+dat1 %>% 
+  select( starts_with('y1')) %>%   # 'y1'으로 시작되는 column만 select
+  colnames()
+```
+
+또다른 방법으로 아래도 가능하다.
+
+```{r}
+dat1 %>% 
+  select( ends_with('date')) %>%    #'~date`로 끝나는 column만 select
+  colnames()
+```
+<br/>  
+
+- **_select_기능을 이용하여 변수의 이름을 변경할 수 있다.**  
+`gender`변수를 `sex`라는 새로운 변수 이름으로 변경해보자  
+```{r}
+dat1 %>% 
+  select( sex = gender) %>% 
+  print(n=5)
+```
+변수의 이름이 변경되었다. 하지만 이 경우 `sex`변수만 select되었다.  
+만약 특정 변수의 이름만 변경하고 나머지 변수들은 그대로 유지하고 싶은 경우는 아래와 같이 해보자.  
+```{r}
+dat1 %>% 
+  rename( sex = gender) %>% 
+  print(n=5)
+```
+즉 `gender`가 `sex`로 변경된 것 외에는 그대로 유지된다.  
+<br/>
+
+
+- **_select_기능을 이용하여 변수의 순서를 변경할 수 있다.**  
+dat1에서 `hcc`, `hcc_yr`을 `id`다음으로 변수 순서를 변경해보자
+```{r}
+dat1 %>% 
+  select(id, hcc, hcc_yr, everything()) %>%   # everything() 으로 남은 변수는 원래 순서 그대로 유지
+  colnames()
+```
+`id`다음으로 `hcc`, `hcc_yr`순서로 변경되었다.  
+<br/>
+
+
+### 4.3 Filter
+<br/>
+
+-   **Filter는 특정 조건을 만족하는 row (case 혹은 환자)를 selection 하는 기능이다.**\
+    Excel에서 깔대기모양의 filter와 같은 역할이다.\
+    Filter function을 이용하기 위해 data를 100명만 선별해서 사용하자.\
+    또한 ID와 LFT 변수만 사용을 해보자
+
+```{r}
+dat2<-dat1 %>% 
+  filter(id<=100) %>% 
+  select(id, treat_gr, gender, age, lc, hcc, hcc_yr,
+         alt, bil, inr, plt, alb, dna_log)
+head(dat2)
+dim(dat2)
+```
+
+row (100) \* column (14)의 small data가 되었다.\
+<br/>
+
+-   **한개의 조건: 남자 case만 골라내기**
+
+```{r}
+dat2 %>% 
+  filter( gender =="M") %>%   # 등호 (=)가 2개여야 한다.
+  print(n=5)
+```
+
+A tibble: 74\*14 라고 표시되어 있다.\
+즉 100개의 case중에 남성(gender=="M)은 74 case이다.\
+<br/>
+
+-   **숫자 조건을 이용해 보자: 50세 이상 골라내기**
+
+```{r}
+dat2 %>% 
+  filter(age >=50) %>% 
+  print(n=5)
+```
+
+100개의 case중에 50세 이상은 36 case
+
+-   **복합 조건 (AND)를 적용해보자: 40세 이상인 남자**
+
+```{r}
+dat2 %>% 
+  filter( age >=40, gender =="M") %>% 
+  print(n=5)
+```
+
+40세이상 남성은 100개 case중에 52명이다. 복합 조건 (AND)는 여러 형식으로 표시 가능하고, 갯수 제한이 없다.
+
+```{r}
+dat2 %>% 
+  filter( age >=30 & gender =="F" & treat_gr=="ETV") %>% 
+  print(n=5)
+```
+
+30세 이상 여성중 ETV를 사용하는 case는 25개  
+<br/>
+
+
+- ** between을 이용하여 30세 이상 60세 이하 골라내기** 
+
+```{r}
+dat2 %>% 
+  filter( age >=30 & age <=60) %>% 
+  print(n=5)
+```
+
+이렇게도 가능하다.
+
+```{r}
+dat2 %>% 
+  filter( between (age, 30, 60)) %>% 
+  print(n=5)
+```
+같은 결과가 나온다.  
+<br/>
+
+- **복합 조건 (OR)을 적용해보자: 50세 이상이거나, 간경변증이 있는 경우**
+
+```{r}
+dat2 %>% 
+  filter( age >=50 | lc==1) %>% # OR은 '|'키를 쓴다. 키보드 엔터키 바로위의 키
+  print(n=5)
+```
+50세 이상 ***OR*** 간경변증(lc==1)이 있는 경우는 60 case\
+<br/>
+
+
+- **좀 더 복잡한 조건 (AND, OR 복합): 70세이상 남자거나 40세이하 여자**
+```{r}
+dat2 %>% 
+  filter( (age>=70 & gender=="M") | (age<=40 & gender=="F")) %>% 
+  print(n=5)
+```
+
+숫자 사칙연산과 같이 복합 조건을 사용할 경우 ( )를 이용해서 먼저 적용될 조건을 뭉친다음 AND 혹은 OR등의 추가 조건을 적용한다.  
+<br/>
+
+
+-   **조건을 만족하지 않는 경우 골라내기**  
+select에서 '-'를 이용하였는데 filter에서는 같다는 의미의 **==** 반대인 **!=** 를 이용한다.  
+남자가 아닌 case 골라내기
+```{r}
+dat2 %>% 
+  filter( gender!="M") %>% 
+  print(n=5)
+```
+
+남자가 아닌 경우는 26 case인데 이 경우는 여자인 경우 밖에 없다.\
+여자는 몇명인지 확인해보자: ***count*** function 이용
+
+```{r}
+dat2 %>% 
+  count(gender)
+```
+남자는 74명, 여자는 26명이 맞다.  
+<br/>
+
+-   **조건을 만족하지 않는 복합 조건: 간경변증이 없는 50세이상**\
+```{r}
+dat2 %>% 
+  filter( lc !=1 & age >=50) %>% 
+  print(n=5)
+```
+총 13 case가 간경변증이 없으면서 50세 이상이다.  
+<br/>
+
+-   **filter function을 이용하여 결측값 갯수를 구할수도 있다.**
+```{r}
+dat2 %>% 
+  filter( is.na(inr)) %>%  # inr이 missing(=na)인 case를 찾아낸다.
+  print(n=5)
+```
+즉 inr 변수는 총 17 case에서 결측치가 관찰된다.  
+<br/>
+
+-   **결측값이 없는 case만 찾아내보자**
+```{r}
+dat2 %>% 
+  filter( !is.na(inr)) %>%  # is.na 앞에 not을 의미하는 !을 붙이면 된다.
+  print(n=5)
+```
+총 83 case가 inr value가 있다.  
+<br/>
+
+### 4.4 Mutate  
+<br/>
+
+- **Mutate는 새로운 변수를 만들어 내는 기능이다.**  
+즉 현재 data에 없는 변수를 기존 변수를 이용해서 계산, 변헝해서 새로운 변수를 만든다.   
+`alt`와 `plt`의 ratio를  `alt_plt`라는 새로운 변수로 만들어 보자.
+
+```{r}
+dat2 %>% 
+  mutate( alt_plt = alt / plt) %>% 
+  print(n=5)
+```
+제일 마지막 column에 `alt_plt`라는 새로운 변수가 생겼다.  
+<br/>
+
+- **조건을 이용하여 새로운 변수를 만들어 보자: _ifelse_ **  
+**_ifelse_**기능을 이용해보자
+age를 50세 기준으로 `age_gr`이라는 새로운 변수로 grouping 해보자  
+***ifelse*** 문법은 ***ifelse***( 조건, 조건이 참일 경우, 조건이 거짓일 경우) 형식이다.  
+```{r}
+dat2 %>% 
+  mutate( age_gr =  ifelse ( age >=50, 'above_50', 'below_50')) %>% 
+  print(n=5)
+```
+50세 기준 age group은 100명중에 몇명씩인지 알아보자
+```{r}
+dat2 %>% 
+  mutate( age_gr =  ifelse ( age >=50, 'above_50', 'below_50')) %>% 
+  count(age_gr)
+```
+<br/>
+
+
+- **_ifelse_: 조건은 여러개 사용할 수 있다.**  
+bilirubin을 <2,2-3,>=3을 기준으로 `bil_gr`이란 변수에 A, B, C로 grouping 해보자
+```{r}
+dat2 %>% 
+  mutate( bil_gr = ifelse( bil <2, 'A',
+                           ifelse( bil <3, 'B', 'C'))) %>% 
+  count( bil_gr)
+```
+
+이해가 되는가? ***ifelse*** 구문을 사용할때 조건이 참 혹은 거짓인 경우 항목에 새로운 ***ifelse***를 넣을 수 있다.    
+
+> ifelse는 이론상 무한개 넣을 수 있지만, 자칫 code가 길어질 수 있다.  
+>따라서 ifelse는 위 code와 같이 horizontal하게 길게 쓰기보다는 새로운 조건이 >나올때마다 아래쪽으로 풀어쓰는것을 추천한다.   
+
+
+아래와 같이 서로 다른 변수들의 복합 조건도 사용 가능하다.  
+50세 이상 간경변증이 있는 환자를 고위험군으로 분류해보자
+```{r}
+dat2 %>% 
+  mutate( risk_gr = ifelse( age >=50 & lc ==1, "high_risk", "low_risk")) %>% 
+  count( risk_gr)
+```
+고위험군 환자는 23명이다.  
+<br/>
+
+
+- **_transmute_: mutate를 이용해 한개의 변수를 만들고, 나머지 변수는 제거하는 경우** 
+```{r}
+dat2 %>% 
+  transmute( bil_gr = ifelse( bil <2, 'A',
+                           ifelse( bil <3, 'B', 'C'))) %>% 
+  print( n=5)
+```
+새롭게 만든 `bil_gr` 변수만 남는 data가 되었다.  
+<br/>
+
+- **_min_rank_: 변수의 크기에 따른 ranking을 하나의 변수로 만들 수 있다.**  
+`age`를 오름차순으로 나열한 `age_rank`라는 새로운 변수를 만들어보자
+```{r}
+dat2 %>% 
+  mutate( age_rank = min_rank(age)) %>% 
+  print( n=5)
+```
+5열의 환자의 경우 26세이고 `age_rank`에서 보면 전체 100명의 환자 중 5번째로 어리다.  
+<br/>
+
+- **내림차순으로는 어떻게 표현할 수 있을까?  
+**_max_rank_**라는 function은 없지만 아래와 같이 할 수 있다.  
+```{r}
+dat2 %>% 
+  mutate( age_rank = min_rank( desc(age))) %>% 
+  select(id, treat_gr, age, age_rank, everything()) %>% 
+  print(n=5)
+```
+4열의 26세 case는 age_rank에서 전체 100 case중에 95번째이다.  
+<br/>
+
+- **_dense_rank: ranking을 정하는데 중간에 gap이 없이 변수를 만든다.**
+```{r}
+dat2 %>% 
+  mutate( age_rank = dense_rank(age)) %>% 
+  print( n=5)
+```
+> 그렇다면 min_rank와 dense_rank의 차이는 무엇인가?  
+> min_rank는 1등 (1명), 2등 (2명)일 경우 다음은 4등으로 반환  
+> dense_rank는 1등 (1명), 2등 (2명)일 경우 다음은 3등으로 반환  
+> 아래에서 확인을 해보자
+
+```{r}
+dat2 %>% 
+  mutate( age_rank = min_rank(age)) %>% 
+  select( id, treat_gr, age, age_rank, everything()) %>% 
+  arrange( age_rank) %>% 
+  print( n=10)
+```
+1등, 2등(2명), 4등, 5등(2명), 다음 7등이다.
+```{r}
+dat2 %>% 
+  mutate( age_rank = dense_rank(age)) %>%
+  select( id, treat_gr, age, age_rank, everything()) %>% 
+  arrange( age_rank) %>% 
+  print( n=10)
+```
+1등, 2등(2명), 3등, 4등(2명), 다음 5등이다.  
+<br/>
+
+- **_percent_rank: ranking을 정하는데 중간에 gap이 없이 변수를 만든다.**
+위의 min_rank 함수가 단순 순위를 매기는 것이라면 percent_rank는 전체 100% 중에 순위를 나타낸다.  
+```{r}
+dat2 %>% 
+  mutate( age_rank = percent_rank(age)) %>% 
+  select( id, treat_gr, age, age_rank, everything()) %>% 
+  arrange( age_rank) %>% 
+  print( n=10)
+```
+<br/>
+
+
+- **_cumall_: 누적 합계를 새로운 변수로 만든다.**  
+`id`는 1:100까지 있는데, `id_sum`이란 새로운 변수에 id의 누적합계를 구해보자
+```{r}
+dat2 %>% 
+  mutate( id_sum = cumsum(id)) %>% 
+  print(n=5)
+```
+`id_sum`의 변수를 보면 1, 3 (1+2), 6 (1+2+3) 형태의 변수가 생겼다.  
+<br/>
+
+
+### 4.5 Arrange  
+<br/>
+
+- **Arrange는 ascending(오름차순), descending(내림차순)으로 변수를 정렬한다.**   
+`age`변수를 낮은 연령에서 높은 연령 순으로 정렬해보자
+```{r}
+dat2 %>% 
+  arrange(age) %>% 
+  print(n=10)
+```
+이번에는 `age`변수를 높은 연령에서 낮은 연령순으로 정렬해보자
+```{r}
+dat2 %>% 
+  arrange(desc(age)) %>%  # desc(변수) option을 주어서 내림차순으로 정렬
+  print(n=10)
+```
+<br/>
+
+-  **Arrange function을 여러가지 변수에 적용할 수 있다.**  
+이때 arrange를 하고 싶은 우선 순위대로 변수를 배치한다.  
+예를 들어 `age`, `alt` 2가지 조건 순서대로 재배열 해보자.  
+```{r}
+dat2 %>% 
+  arrange(age, alt) %>% 
+  print(n=10)
+```
+`age`가 오름차순으로 배열되어 있고, `age`가 24세인 경우, `alt` 역시 오름차순으로 배열되어 있다.   
+<br/>
+
+
+### 4.6. Summarise  
+<br/>
+
+- **Summarise는 일종의 aggregation function이다. 요약 정보를 준다.**  
+summarise function 내부에 요약 정보를 위한 새로운 함수가 꼭 포함되어야 된다.  
+`age`의 평균을 구해보자.   
+```{r}
+mean(dat2$age)
+```
+이렇게 구할 수 있다.  
+하지만 summarise function을 이용해보자.  
+```{r}
+dat2 %>% 
+  summarise(mean_age = mean(age))
+```
+결과값은 똑같지만 **_summarise_**를 이용할 경우 동시에 여러개의 요약 정보를 구할 수 있다. 
+<br/>
+
+
+- **여러개의 요약정보 동시에 구하기**
+`age`의 mean, median, IQR을 한꺼번에 구해보자.
+```{r}
+dat2 %>% 
+  summarise(mean_age = mean(age),
+            median_age = median(age),
+            iqr_age = IQR(age))
+```
+이렇게 동시에 여러 요약정보를 저장할 수 있다.  
+지금은 단순 **_mean(dat2$age)_**가 더 간단해 보일 수 있다. 하지만 뒤에서 나올 **_group_by_**와 같은 function과 함께 쓰거나 code가 복잡해지면 **_summarise_** function이 더 유용하다.  
+<br/>
+
+
+### 4.7 Group_by  
+<br/>
+
+
+- **전체 data에서 일부 변수를 기준으로 나누어서 분석을 수행한다.**  
+`age`평균을 남녀에 따라 아래와 같이 구할 수 있다.
+```{r}
+dat2 %>% 
+  group_by(gender) %>% 
+  summarise(mean_age = mean(age))
+```
+즉 **_group_by_** function은 단독보다는 **_summarise_** function과 같이 많이 사용된다.  
+<br/>
+
+
+- **_count_: 해당 조건을 만족하는 변수의 갯수를 알 수 있다.**  
+100개 case중에 `gender`의 분포를 알아보자.
+```{r}
+dat2 %>% 
+  count(gender)
+```
+한개 이상의 변수를 이용하여 변수의 갯수를 아래와 같이 볼 수도 있다.  
+```{r}
+dat2 %>% 
+  count(gender, lc)
+```
+즉 여성에서 간경변증은 12명, 간경변증이 없는 여성은 14명이다.  
+남성에서 간경변증은 35명, 간경변증이 없는 남성은 39명이다.  
+<br/>
+- **위의 function들을 같이 사용할 수 있다.**  
+**_group_by_**, **_summarise_**를 동시에 사용하여 남성, 여성에서 간경변증 유무에 따른 평균 연령을 구해보자.  
+```{r}
+dat2 %>% 
+  group_by(gender, lc) %>% 
+  summarise( patient_no = n(),
+             mean_age = mean(age))
+```
+총 4개의 subgroup (남+간경변증+, 남+간경변증-, 여+간경변증+, 여+간경변증-)에서 mean age가 계산된다.  
+<br/>
+
+결측치가 있는 변수는 mean, median등의 함수에서 **_na.rm=T_** option을 주는것을 잊어버리지 말자.  
+```{r}
+dat2 %>% 
+  group_by(gender, lc) %>% 
+  summarise( patient_no = n(),
+             mean_inr = mean(inr))
+```
+`mean_inr` 결과값이 _NA_ (결측값)으로 나온다.   
+```{r}
+dat2 %>% 
+  group_by(gender, lc) %>% 
+  summarise( patient_no = n(),
+             mean_inr = mean(inr, na.rm=T))
+```
+**_na.rm=T_** option을 추가하니 정상적인 값이 나온다.  
+<br/>
+
+
+> summarise function을 잘쓰면 incidence, person-year, event rate등을 코드 몇줄로 쉽게 구할 수 있다.  
+
+- **HCC incidence를 구해보자**  
+`hcc` 변수는 간암의 발생 여부이다. (0=no HCC, 1=HCC발생)  
+`hcc_yr` 변수는 index_date로 부터 간암 발생 혹은 last f/u date까지 기간 (년)이다.  
+incidence = number of event (`hcc`) /  observation period (`hcc_yr`)  
+따라서 아래와 같이 구해볼 수 있다.  
+```{r}
+dat2 %>% 
+  summarise( patient_number = n(),
+             event = sum(hcc),
+             person_year = sum(hcc_yr),
+             incidence_rate = event / person_year)
+```
+총 100개의 case (=100명의 환자)에서 event (HCC)는 15 case발생하였고, 전체 observation period는 정확히는 684 person-year (인년)이다.   
+계산에서 HCC incidence rate는 0.0219 / person-year    
+일반적으로 100 person-year 혹은 1000 person-year로 잘 나타내므로, HCC incidence는 2.19/100 PY (person-year)로 표현할 수 있다. 
+
+
